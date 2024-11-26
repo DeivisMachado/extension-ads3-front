@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom';
 import '../css/nav.css'
 import logoNav from '../img/logo-nav.webp';
+import axios from 'axios';
 
 export const Navbar = ({ isAdmin, onCadastrar, onLogout }) => {
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    axios.defaults.headers.common['Authorization'] = '';
+    onLogout();
+  };
+
   return (
     <nav className="mask">
       <div className="logo-nav">
@@ -19,8 +26,11 @@ export const Navbar = ({ isAdmin, onCadastrar, onLogout }) => {
           <li><Link to="/?tipo=ACELERADORA">Aceleradoras</Link></li>
           {isAdmin ? (
             <>
-              <li><button onClick={onCadastrar}>Cadastrar</button></li>
-              <li><button onClick={onLogout}>Sing out</button></li>
+              <li><button onClick={() => {
+                console.log('Botão cadastrar clicado');
+                onCadastrar();
+              }}>Cadastrar</button></li>
+              <li><button onClick={handleLogout}>Sign out</button></li>
             </>
           ) : (
             <li><Link to="/login"><button>Sign in</button></Link></li>

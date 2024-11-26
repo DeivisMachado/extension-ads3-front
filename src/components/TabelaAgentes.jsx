@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import { useSearchParams } from 'react-router-dom';
 
 export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
@@ -19,7 +19,7 @@ export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
   useEffect(() => {
     const carregarAgentes = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8080/agente");
+        const response = await api.get("/agente");
         if (response.status === 200) {
           const listaFiltrada = response.data
             .filter(agente => !tipo || agente.tipo === tipo)
@@ -27,6 +27,10 @@ export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
           setAgentes(listaFiltrada);
         }
       } catch (err) {
+        if (err.response?.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }
         alert(`Erro não Mapeado: ${err.message}`);
       }
     };
@@ -63,7 +67,16 @@ export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
                 {isAdmin && (
                   <td>
                     <button onClick={() => onEdit(agente)}>Editar</button>
-                    <button onClick={() => onDelete(agente)}>Excluir</button>
+                    <button 
+                      onClick={() => onDelete(agente)}
+                      style={{
+                        backgroundColor: '#ff4444',
+                        color: 'white',
+                        marginLeft: '5px'
+                      }}
+                    >
+                      Excluir
+                    </button>
                   </td>
                 )}
               </tr>

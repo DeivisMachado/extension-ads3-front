@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import '../css/index.css';
-import '../css/index_criar.css';
+import api from '../services/api';
+
 
 export const FormularioAgente = ({ agente, onSave, onClose }) => {
-  const [formData, setFormData] = useState(agente || {
+  console.log('FormularioAgente renderizado', { agente });
+  
+  useEffect(() => {
+    console.log('Modal deve estar visível agora');
+  }, []);
+
+  const [formData, setFormData] = useState({
     nome: '',
     tipo: 'PREINCUBADORA',
     descricao: '',
@@ -15,18 +20,35 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
     numero: '',
     cep: '',
     bairro: '',
-    complemento: ''
+    complemento: '',
+    ...agente
   });
+
+  useEffect(() => {
+    if (agente) {
+      setFormData(prev => ({
+        ...prev,
+        ...agente,
+        cidade: agente.cidade?.id || agente.id_cidade || '',
+      }));
+    }
+  }, [agente]);
+
   const [cidades, setCidades] = useState([]);
 
   useEffect(() => {
     const carregarCidades = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8080/cidade");
+        const response = await api.get("/cidade");
         if (response.status === 200) {
           setCidades(response.data);
         }
       } catch (err) {
+        if (err.response?.status === 401) {
+          // Token expirado ou inválido
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }
         alert(`Erro ao carregar cidades: ${err.message}`);
       }
     };
@@ -43,22 +65,86 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
   };
 
   const handlePhone = (e) => {
-    let value = e.target.value.replace(/\D/g, '');
-    value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-    value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+    let value = e.target.value.replace(/\D/g, ''); // Remove não-dígitos
+    if (value.length > 11) value = value.slice(0, 11); // Limita a 11 dígitos
+    
+    // Formata o número
+    if (value.length > 2) {
+      value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+    }
+    if (value.length > 10) {
+      value = `${value.slice(0, 10)}-${value.slice(10)}`;
+    }
+    
     setFormData(prev => ({
       ...prev,
       telefone: value
     }));
   };
 
+  const handleCep = (e) => {
+    let value = e.target.value.replace(/\D/g, ''); // Remove não-dígitos
+    if (value.length > 8) value = value.slice(0, 8); // Limita a 8 dígitos
+    
+    // Formata o CEP
+    if (value.length > 5) {
+      value = `${value.slice(0, 5)}-${value.slice(5)}`;
+    }
+    
+    setFormData(prev => ({
+      ...prev,
+      cep: value
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
+    
+    // Validação básica
+    const requiredFields = ['nome', 'tipo', 'descricao', 'telefone', 'email', 'cidade', 'logradouro', 'numero', 'cep', 'bairro'];
+    const missingFields = requiredFields.filter(field => !formData[field]);
+    
+    if (missingFields.length > 0) {
+      alert(`Por favor, preencha os campos obrigatórios: ${missingFields.join(', ')}`);
+      return;
+    }
+
+    // Validações específicas
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      alert('Por favor, insira um email válido');
+      return;
+    }
+
+    if (formData.telefone && formData.telefone.replace(/\D/g, '').length < 10) {
+      alert('Por favor, insira um telefone válido com DDD');
+      return;
+    }
+
+    if (formData.cep && formData.cep.replace(/\D/g, '').length !== 8) {
+      alert('Por favor, insira um CEP válido');
+      return;
+    }
+
+    try {
+      const dadosFormatados = {
+        ...formData,
+        id: agente?.id ? parseInt(agente.id) : undefined,
+        cidade: undefined, // Remove o objeto cidade
+        id_cidade: parseInt(formData.cidade)
+      };
+
+      console.log('Dados formatados para envio:', dadosFormatados);
+      await onSave(dadosFormatados);
+    } catch (error) {
+      console.error('Erro ao salvar:', error);
+      alert('Erro ao salvar o agente. Por favor, tente novamente.');
+    }
   };
 
   return (
-    <div className="modal">
+    <div className="modal" onClick={(e) => {
+      if (e.target.className === 'modal') onClose();
+    }}>
       <div className="modal-content">
         <div className="fundo">
           <div className="background"></div>
@@ -129,6 +215,7 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 onChange={handleChange}
                 required
               >
+                <option value="">Selecione uma cidade</option>
                 {cidades.map(cidade => (
                   <option key={cidade.id} value={cidade.id}>
                     {cidade.nome}
@@ -162,7 +249,8 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 placeholder="XXXXX-XXX" 
                 id="cep"
                 value={formData.cep}
-                onChange={handleChange}
+                onChange={handleCep}
+                maxLength="9"
                 required
               />
 
