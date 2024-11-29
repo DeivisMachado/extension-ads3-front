@@ -44,26 +44,18 @@ export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
         <table>
           <thead>
             <tr>
+              {isAdmin && <th style={{width: "5%"}}>Ações</th>}
               <th style={{width: "10%"}}>Nome</th>
               <th style={{width: "20%"}}>Descrição</th>
               <th style={{width: "8%"}}>Tipo</th>
               <th style={{width: "15%"}}>Contato</th>
               <th style={{width: "18%"}}>Endereço</th>
-              {isAdmin && <th style={{width: "3%"}}>Ações</th>}
+              
             </tr>
           </thead>
           <tbody>
             {agentes.map(agente => (
               <tr key={agente.id}>
-                <td>{agente.nome}</td>
-                <td>{agente.descricao}</td>
-                <td>{nomeBonitoParaOTipo(agente.tipo)}</td>
-                <td style={{whiteSpace: "pre-line"}}>
-                  {`Telefone: ${agente.telefone}\nEmail: ${agente.email}`}
-                </td>
-                <td style={{whiteSpace: "pre-line"}}>
-                  {`Cidade: ${agente.cidade?.nome ?? ""}\nLogradouro: ${agente.logradouro}\nNumero: ${agente.numero}\nCEP: ${agente.cep}\nBairro: ${agente.bairro}\nComplemento: ${agente.complemento ?? "Nada consta."}`}
-                </td>
                 {isAdmin && (
                   <td>
                     <button onClick={() => onEdit(agente)}>Editar</button>
@@ -79,6 +71,16 @@ export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
                     </button>
                   </td>
                 )}
+                <td>{agente.nome}</td>
+                <td>{agente.descricao}</td>
+                <td>{nomeBonitoParaOTipo(agente.tipo)}</td>
+                <td style={{whiteSpace: "pre-line"}}>
+                  {`Telefone: ${agente.telefone}\nEmail: ${agente.email}`}
+                </td>
+                <td style={{whiteSpace: "pre-line"}}>
+                  {`Cidade: ${agente.cidade?.nome ?? ""}\nLogradouro: ${agente.logradouro}\nNumero: ${agente.numero}\nCEP: ${agente.cep}\nBairro: ${agente.bairro}\nComplemento: ${agente.complemento ?? "Nada consta."}`}
+                </td>
+                
               </tr>
             ))}
           </tbody>
