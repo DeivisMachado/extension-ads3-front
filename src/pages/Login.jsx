@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logoNav from '../img/logo-nav.webp';
+import './Login.css';
 
 export const Login = ({ onLoginSuccess }) => {
   const [credentials, setCredentials] = useState({ email: '', senha: '' });
@@ -40,11 +41,10 @@ export const Login = ({ onLoginSuccess }) => {
 
   return (
     <>
-      <div className="background"></div>
-      <div className="card">
-        <img className="logo" src={logoNav} alt="Logo" />
+      <div className="login-page"></div>
+      <div className="login-card">
         <h2>Login</h2>
-        <form className="form" onSubmit={handleLogin}>
+        <form className="login-form" onSubmit={handleLogin}>
           <label>E-mail:</label>
           <input 
             type="email" 

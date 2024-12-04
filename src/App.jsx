@@ -1,12 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import './css/nav.css';
-import './css/index.css';
-import './css/index_criar.css';
-import './css/index_clientes.css';
+import './styles/global.css';
 import { Navbar } from './components/Navbar';
 import { TabelaAgentes } from './components/TabelaAgentes';
-import { FormularioAgente } from './components/FormularioAgente';
+
 import { Login } from './pages/Login';
 import api from './services/api';
 

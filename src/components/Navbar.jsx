@@ -1,42 +1,57 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/nav.css'
 import logoNav from '../img/logo-nav.webp';
 import axios from 'axios';
 
 export const Navbar = ({ isAdmin, onCadastrar, onLogout }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     axios.defaults.headers.common['Authorization'] = '';
     onLogout();
   };
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
-    <nav className="mask">
-      <div className="logo-nav">
-        <img src={logoNav} alt="logo" />
-      </div>
-      <div className="container-nav">
-        <div className="frase-nav">
-          <h4>O que você procura?</h4>
+    <>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu" />
+      <span 
+        className="material-symbols-outlined menu-icon" 
+        onClick={toggleMenu}
+      >
+        menu
+      </span>
+      <div className={`menu-overlay ${menuOpen ? 'active' : ''}`} onClick={toggleMenu}></div>
+      <nav className={`mask ${menuOpen ? 'active' : ''}`}>
+        <div className="logo-nav">
+          <img src={logoNav} alt="logo" />
         </div>
         <ul className="list">
-          <li><Link to="/">Tudo</Link></li>
-          <li><Link to="/?tipo=PREINCUBADORA">Pré-Incubadoras</Link></li>
-          <li><Link to="/?tipo=INCUBADORA">Incubadoras</Link></li>
-          <li><Link to="/?tipo=ACELERADORA">Aceleradoras</Link></li>
+          <li><Link to="/" onClick={toggleMenu}>Tudo</Link></li>
+          <li><Link to="/?tipo=PREINCUBADORA" onClick={toggleMenu}>Pré-Incubadoras</Link></li>
+          <li><Link to="/?tipo=INCUBADORA" onClick={toggleMenu}>Incubadoras</Link></li>
+          <li><Link to="/?tipo=ACELERADORA" onClick={toggleMenu}>Aceleradoras</Link></li>
           {isAdmin ? (
             <>
               <li><button onClick={() => {
-                console.log('Botão cadastrar clicado');
                 onCadastrar();
+                toggleMenu();
               }}>Cadastrar</button></li>
-              <li><button onClick={handleLogout}>Sign out</button></li>
+              <li><button onClick={() => {
+                handleLogout();
+                toggleMenu();
+              }}>Sign out</button></li>
             </>
           ) : (
-            <li><Link to="/login"><button>Sign in</button></Link></li>
+            <li><Link to="/login" onClick={toggleMenu}><button>Sign in</button></Link></li>
           )}
         </ul>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }; 

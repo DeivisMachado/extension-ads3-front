@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { useSearchParams } from 'react-router-dom';
 
+import '../css/index.css'
+import '../css/index_clientes.css';
+
 export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
   const [agentes, setAgentes] = useState([]);
   const [searchParams] = useSearchParams();

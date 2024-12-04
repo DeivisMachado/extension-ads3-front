@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-
+import './FormularioAgente.css';
 
 export const FormularioAgente = ({ agente, onSave, onClose }) => {
   console.log('FormularioAgente renderizado', { agente });
@@ -152,16 +152,17 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
             <h2>{agente ? 'Atualizar Agente' : 'Novo Agente'}</h2>
             <div className="form">
               <input type="number" style={{display: 'none'}} id="id" value={formData.id || ''} onChange={handleChange} />
-              
-              <label>Nome <span style={{color: 'red'}}>*</span></label>
-              <input 
-                type="text" 
-                placeholder="Projeto X" 
-                id="nome"
-                value={formData.nome}
-                onChange={handleChange}
-                required
-              />
+              <div className="input-group">
+                <label>Nome <span style={{color: 'red'}}>*</span></label>
+                <input 
+                  type="text" 
+                  placeholder="Projeto X" 
+                  id="nome"
+                  value={formData.nome}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
               <label>Tipo <span style={{color: 'red'}}>*</span></label>
               <select 
