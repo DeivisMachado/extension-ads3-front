@@ -66,7 +66,7 @@ Descrição: ${agente.descricao ?? "Nada consta"}`;
         <table>
           <thead>
             <tr>
-              {isAdmin && <th style={{width: "5%"}}>Ações</th>}
+              {isAdmin && <th style={{width: "10%"}}>Ações</th>}
               <th style={{width: "30%"}}>Nome</th>
               <th style={{width: "100%"}}>Tipo</th>
               <th style={{width: "100%"}}>Endereço</th>
