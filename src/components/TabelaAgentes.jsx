@@ -8,6 +8,7 @@ import '../css/index_clientes.css';
 export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
   const [agentes, setAgentes] = useState([]);
   const [searchParams] = useSearchParams();
+  const [expandedRow, setExpandedRow] = useState(null);
   const tipo = searchParams.get('tipo');
 
   const nomeBonitoParaOTipo = (tipo) => {
@@ -17,6 +18,24 @@ export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
       'ACELERADORA': 'Aceleradora'
     };
     return tipos[tipo] || 'Not Found';
+  };
+
+  const toggleExpand = (id) => {
+    setExpandedRow(expandedRow === id ? null : id);
+  };
+
+  const renderExpandedInfo = (agente) => {
+    return `Nome: ${agente.nome}
+Tipo: ${nomeBonitoParaOTipo(agente.tipo)}
+Telefone: ${agente.telefone}
+Email: ${agente.email}
+Cidade: ${agente.cidade?.nome ?? ""}
+Logradouro: ${agente.logradouro}
+Numero: ${agente.numero}
+CEP: ${agente.cep}
+Bairro: ${agente.bairro}
+Complemento: ${agente.complemento ?? "Nada consta"}
+Descrição: ${agente.descricao ?? "Nada consta"}`;
   };
 
   useEffect(() => {
@@ -48,43 +67,54 @@ export const TabelaAgentes = ({ isAdmin, onEdit, onDelete }) => {
           <thead>
             <tr>
               {isAdmin && <th style={{width: "5%"}}>Ações</th>}
-              <th style={{width: "10%"}}>Nome</th>
-              <th style={{width: "20%"}}>Descrição</th>
-              <th style={{width: "8%"}}>Tipo</th>
-              <th style={{width: "15%"}}>Contato</th>
-              <th style={{width: "18%"}}>Endereço</th>
-              
+              <th style={{width: "30%"}}>Nome</th>
+              <th style={{width: "100%"}}>Tipo</th>
+              <th style={{width: "100%"}}>Endereço</th>
             </tr>
           </thead>
           <tbody>
             {agentes.map(agente => (
-              <tr key={agente.id}>
-                {isAdmin && (
-                  <td>
-                    <button onClick={() => onEdit(agente)}>Editar</button>
-                    <button 
-                      onClick={() => onDelete(agente)}
-                      style={{
-                        backgroundColor: '#ff4444',
-                        color: 'white',
-                        marginLeft: '5px'
-                      }}
-                    >
-                      Excluir
-                    </button>
+              <>
+                <tr key={agente.id}>
+                  {isAdmin && (
+                    <td>
+                      <button onClick={() => onEdit(agente)}>Editar</button>
+                      <button 
+                        onClick={() => onDelete(agente)}
+                        style={{
+                          backgroundColor: '#ff4444',
+                          color: 'white',
+                          marginLeft: '5px'
+                        }}
+                      >
+                        Excluir
+                      </button>
+                    </td>
+                  )}
+                  <td onClick={() => toggleExpand(agente.id)} style={{cursor: 'pointer'}}>
+                    {agente.nome}
                   </td>
-                )}
-                <td>{agente.nome}</td>
-                <td>{agente.descricao}</td>
-                <td>{nomeBonitoParaOTipo(agente.tipo)}</td>
-                <td style={{whiteSpace: "pre-line"}}>
-                  {`Telefone: ${agente.telefone}\nEmail: ${agente.email}`}
-                </td>
-                <td style={{whiteSpace: "pre-line"}}>
-                  {`Cidade: ${agente.cidade?.nome ?? ""}\nLogradouro: ${agente.logradouro}\nNumero: ${agente.numero}\nCEP: ${agente.cep}\nBairro: ${agente.bairro}\nComplemento: ${agente.complemento ?? "Nada consta."}`}
-                </td>
+                  <td onClick={() => toggleExpand(agente.id)} style={{cursor: 'pointer'}}>
+                    {nomeBonitoParaOTipo(agente.tipo)}
+                  </td>
                 
-              </tr>
+                  <td onClick={() => toggleExpand(agente.id)} style={{cursor: 'pointer'}}>
+                    {`${agente.cidade?.nome ?? ""}`}
+                  </td>
+                </tr>
+                {expandedRow === agente.id && (
+                  <tr>
+                    <td colSpan={isAdmin ? 5 : 4} style={{
+                      whiteSpace: "pre-line",
+                      textAlign: "left",
+                      padding: "15px",
+                      backgroundColor: "#f8f9fa"
+                    }}>
+                      {renderExpandedInfo(agente)}
+                    </td>
+                  </tr>
+                )}
+              </>
             ))}
           </tbody>
         </table>

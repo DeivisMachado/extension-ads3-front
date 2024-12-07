@@ -123,16 +123,16 @@ iframe {
 .tabela-clientes {
     background-color: #fff;
     margin-top: 150px;
+    width: 85vw;
 }
 
-table {
-    width: 100%;
-}
+
 
 th,
 td {
     font-weight: unset;
     padding-right: 10px;
+    max-width: 10px;
 }
 
 .column1 {
@@ -159,6 +159,7 @@ td {
 .tabela-conteiner th {
     padding-top: 18px;
     padding-bottom: 18px
+    
 }
 
 .table100-body td {
@@ -183,7 +184,7 @@ td {
     color: #fff;
     line-height: 1.4;
     background-color: #6c7ae0;
-    min-width: 120px;
+    min-width:10px;
     white-space: nowrap;
     padding: 18px 10px;
 }
@@ -200,6 +201,27 @@ td {
     -webkit-box-shadow: 0 0 40px 0 rgba(0, 0, 0, .15);
     -o-box-shadow: 0 0 40px 0 rgba(0, 0, 0, .15);
     -ms-box-shadow: 0 0 40px 0 rgba(0, 0, 0, .15);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tabela-clientes th,td{
+    max-width: 300px;
+}
+
+.tabela-clientes td:hover {
+    background-color: #f0f0f0;
+}
+
+.tabela-clientes tr[data-expanded="true"] td {
+    border-bottom: none;
+}
+
+.tabela-clientes .expanded-content {
+    background-color: #f8f9fa;
+    padding: 15px;
+    white-space: pre-line;
+    text-align: left;
 }
 
 .tabela-clientes .table100-body tr:nth-child(even) {
@@ -291,4 +313,18 @@ td > i{
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+@media (max-width: 400px) {
+
+    .tabela-clientes th,
+    .tabela-clientes td {
+        font-size: 15px;
+        padding: 8px 4px;
+    }
+
+    .tabela-clientes button {
+        font-size: 15px;
+        padding: 4px 8px;
+    }
 }
