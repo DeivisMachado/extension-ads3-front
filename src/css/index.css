@@ -11,7 +11,7 @@ body {
   
   .card {
     font-size: 20px;
-    text-align-last: justify;
+    
     overflow: hidden;
     position: relative;
     z-index: 3;
@@ -22,7 +22,7 @@ body {
     border-radius: 24px;
     background: #ffffff;
     text-align: center;
-    box-shadow: 4px 4px 8px 1px #0000003f;
+    
   }
   
   @media (min-width: 500px) {
@@ -44,6 +44,7 @@ body {
     height: 100vmin;
     border-radius: 47% 53% 61% 39% / 45% 51% 49% 55%;
     background: #65c8ff;
+    z-index: -1;
   }
   
   .background::after {

@@ -12,3 +12,12 @@ body {
 }
 
 /* Outras estilizações comuns */ 
+.material-symbols-outlined {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .material-symbols-outlined.menu-icon {
+    display: block !important;
+  }
+}

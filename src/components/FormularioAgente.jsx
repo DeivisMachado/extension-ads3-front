@@ -163,7 +163,7 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                   required
                 />
               </div>
-
+              <div className="input-group">
               <label>Tipo <span style={{color: 'red'}}>*</span></label>
               <select 
                 name="tipo" 
@@ -176,7 +176,9 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 <option value="INCUBADORA">Incubadora</option>
                 <option value="ACELERADORA">Aceleradora</option>
               </select>
+              </div>
 
+              <div className="input-group">
               <label>Descrição <span style={{color: 'red'}}>*</span></label>
               <input 
                 type="text" 
@@ -186,7 +188,9 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 onChange={handleChange}
                 required
               />
+              </div>
 
+              <div className="input-group">
               <label>Telefone <span style={{color: 'red'}}>*</span></label>
               <input 
                 type="tel" 
@@ -197,7 +201,9 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 onChange={handlePhone}
                 required
               />
+              </div>
 
+              <div className="input-group">
               <label>E-mail <span style={{color: 'red'}}>*</span></label>
               <input 
                 type="email" 
@@ -207,7 +213,9 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 onChange={handleChange}
                 required
               />
+              </div>
 
+              <div className="input-group">
               <label>Cidade <span style={{color: 'red'}}>*</span></label>
               <select 
                 name="cidade" 
@@ -223,7 +231,9 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                   </option>
                 ))}
               </select>
-
+              </div>
+              
+              <div className="input-group">
               <label>Logradouro <span style={{color: 'red'}}>*</span></label>
               <input 
                 type="text" 
@@ -233,7 +243,9 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 onChange={handleChange}
                 required
               />
+              </div>
 
+              <div className="input-group">
               <label>Número <span style={{color: 'red'}}>*</span></label>
               <input 
                 type="text" 
@@ -243,7 +255,9 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 onChange={handleChange}
                 required
               />
+              </div>
 
+              <div className="input-group">
               <label>CEP <span style={{color: 'red'}}>*</span></label>
               <input 
                 type="text" 
@@ -254,7 +268,9 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 maxLength="9"
                 required
               />
+              </div>
 
+              <div className="input-group">
               <label>Bairro <span style={{color: 'red'}}>*</span></label>
               <input 
                 type="text" 
@@ -264,7 +280,9 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 onChange={handleChange}
                 required
               />
+              </div>
 
+              <div className="input-group">
               <label>Complemento</label>
               <input 
                 type="text" 
@@ -273,7 +291,10 @@ export const FormularioAgente = ({ agente, onSave, onClose }) => {
                 value={formData.complemento || ''}
                 onChange={handleChange}
               />
-
+              </div>
+              
+            </div>
+            <div className="button-group">
               <button type="button" onClick={handleSubmit}>Salvar</button>
               <button type="button" onClick={onClose}>Cancelar</button>
             </div>
